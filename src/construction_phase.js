@@ -1067,7 +1067,19 @@ function createRefs(ctx, ast, scope) {
         } else if (ast.type == "FUNCTIONDEF") {
             ast.refId = define(ast.name, {t: "F"});
         } else if (ast.type == "INCLUDE") {
-            const incFileName = path.resolve(ctx.filePath, ast.file);
+            const match = ast.file.match(/@(.+)\//);
+            let incFileName;
+            if (match) {
+              const key = match[1];
+              if (ctx.pathMap[key] == undefined) {
+                return ctx.throwError(ast, "Included path-mapped file not found:" + ast.file);
+              }
+              const val = ctx.pathMap[key];
+              incFileName = path.resolve(ast.file.replace("@" + key, val));
+            } else {
+              incFileName = path.resolve(ctx.filePath, ast.file);
+            }
+
             const incFilePath = path.dirname(incFileName);
 
             ctx.includedFiles = ctx.includedFiles || [];

@@ -65,6 +65,7 @@ async function compile(srcFile, options) {
     ctx.verbose= options.verbose || false;
     ctx.mainComponent = options.mainComponent || "main";
     ctx.newThreadTemplates = options.newThreadTemplates;
+    ctx.pathMap = options.pathMap;
 
     measures.constructionPhase = -performance.now();
     constructionPhase(ctx, srcFile);
