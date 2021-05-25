@@ -83,7 +83,7 @@ template Num2Bits(n) {
     lc1 === in;
 }
 
-component main = Num2Bits(8)
+component main = Num2Bits(8);
 ```
 
 First of all, note that templates can have parameters. This allows to create libraries with templates that generate circuits in parametric ways. In this case, the circuit has an output of 8 signals, but one can easily instantiate any circuit with any number of outputs.
