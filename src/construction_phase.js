@@ -795,7 +795,18 @@ function execLoop(ctx, ast) {
         return;
     }
 
+    let loopIdx = 0;
+    let isTopLevelLoop = !ctx.hasParentLoop;
+    ctx.hasParentLoop = true;
     while ((! ctx.F.isZero(v.v[0].v))&&(!ctx.returnValue)) {
+        if (ctx.verbose && ctx.main && isTopLevelLoop) {
+            let logStr =  `main loop: loopIdx ${loopIdx}`;
+            if (ast.condition.type === 'OP') {
+                logStr += ` condition ${ast.condition.values.map(item => item.name).join(ast.condition.op)}`;
+            }
+            logStr += ` at ${ctx.fileName}:${ast.first_line}`;
+            console.log(logStr)
+        }
         exec(ctx, ast.body);
         if (ctx.error) return;
 
@@ -808,6 +819,10 @@ function execLoop(ctx, ast) {
         if (ctx.error) return;
         if (v.s[0] != 1) return ctx.throwError(ast.condition, "Condition in loop cannot be an array");
         if (v.v[0].t != "N") return ctx.throwError(ast.condition, "Condition result not a number");
+        loopIdx++;
+    }
+    if (isTopLevelLoop) {
+        ctx.hasParentLoop = null;
     }
 }
 
