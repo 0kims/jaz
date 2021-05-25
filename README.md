@@ -161,7 +161,7 @@ binsum.circom
 Binary sum
 ==========
 
-This component creates a binary sum componet of ops operands and n bits each operand.
+This component creates a binary sum component of ops operands and n bits each operand.
 
 e is number of carries and it depends on the number of operands in the input.
 
